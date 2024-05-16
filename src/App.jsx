@@ -1,26 +1,57 @@
-import { useState } from 'react'
 
+import { useImmer } from 'use-immer';
+
+const INITIAL_STATE = {
+  user: {
+    id: 2,
+    firstname: 'mario',
+    lastname: 'rossi',
+    workspaces: [
+      {
+        id: 1, 
+        name: 'main', 
+        layout: 'full',
+        data: {
+          count: 0
+        }
+      }
+    ]
+  }
+}
 
 export default function App() {
-  const [count, setCount] = useState(0);
+
+  const [state, setState] = useImmer(INITIAL_STATE);
 
   function inc() {
-    setCount(count + 1);
+    const workspaceIndex = state.user.workspaces.findIndex(w => w.name == 'main');
+    
+    setState(draft => {
+      draft.user.workspaces[workspaceIndex].data.count++;
+    });
   }
 
 
   function dec() {
-    setCount(count - 1);
+    const workspaceIndex = state.user.workspaces.findIndex(w => w.name == 'main');
+    
+    setState(draft => {
+      draft.user.workspaces[workspaceIndex].data.count--;
+    });
   }
 
 
   function reset() {
-    setCount(0);
+    const workspaceIndex = state.user.workspaces.findIndex(w => w.name == 'main');
+    
+    setState(draft => {
+      draft.user.workspaces[workspaceIndex].data.count = 0;
+    });
   }
 
   return (
     <>
-      <h1>{count}</h1>
+      <h1>{state.user.workspaces[0].data.count}</h1>
       <button onClick={inc}>+</button>
       <button onClick={dec}>-</button>
       <button onClick={reset}>reset</button>
