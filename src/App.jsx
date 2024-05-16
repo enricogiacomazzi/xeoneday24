@@ -1,30 +1,29 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
+import Buttons from './components/Buttons';
 
 
 export default function App() {
-  const [count, setCount] = useState(0);
+    
+  const [count, dispatch] = useReducer(reducer, 0);
 
-  function inc() {
-    setCount(count + 1);
-  }
-
-
-  function dec() {
-    setCount(count - 1);
-  }
-
-
-  function reset() {
-    setCount(0);
+  function reducer(state, action){
+    switch(action.type) {
+      case 'inc':
+        return state + 1;
+      case 'dec':
+        return state - 1;
+      case 'reset':
+        return 0;
+    }
   }
 
   return (
     <>
       <h1>{count}</h1>
-      <button onClick={inc}>+</button>
-      <button onClick={dec}>-</button>
-      <button onClick={reset}>reset</button>
+      <Buttons handler={type => dispatch({type})}/>
     </>
   )
+
+
 }
 
