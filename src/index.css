@@ -7,3 +7,31 @@ body {
 h1, h2, h3 {
   text-align: center;
 }
+
+
+.title {
+  border: 2px solid black;
+}
+
+.danger, .very-danger {
+  color: red;
+  border-color: red;
+}
+
+.very-danger {
+  border-width: 5px;
+  font-size: 50px;
+
+}
+
+
+
+
+.bar {
+  height: 15px;
+  background-color: purple;
+  width: 10px;
+}
+
+
+
