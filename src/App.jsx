@@ -1,67 +1,69 @@
 import clsx from "clsx";
-
-
-import { useForm } from "react-hook-form";
-
-
-
+import { useFormik } from 'formik';
 
 export default function App() {
 
-
-  const { 
-    register, 
-    handleSubmit, 
-    trigger, 
-    watch, 
-    formState: { 
-      errors, 
-      isDirty, 
-      isValid 
-    } 
-  } = useForm({mode: "all", criteriaMode: "all"});
-
-
   const emailRgx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi;
 
-  watch(() => trigger());
+  const validateFn = ({username, email}) => {
+    const err = {}
+    if(username.length === 0) {
+      err.username = 'username is required';
+    }
+
+    if(!email) {
+      err.email = 'email is required';
+    } else {
+      if(!emailRgx.test(email)) {
+        err.email = 'invalid email address';
+      }
+    }
+    return err;
+  };
+
+  const {values, errors, touched, handleChange, handleBlur, handleSubmit} = useFormik({
+    initialValues: { username: '', email: ''},
+    validate: validateFn,
+    onSubmit: (data) => console.log(data)
+  });
 
 
 
-  const submitHandler = (data) => {
-    console.log(data);
-  }
 
   const inputStyle = (ctrl) => { 
+    const someTouched = Object.values(touched).some(x => x);
     var valid = undefined;
-    if(isDirty) {
+    if(someTouched) {
       valid = !!errors[ctrl] ? 'is-invalid' : 'is-valid' 
     }
 
     return clsx('form-control', valid);
   }
 
-
-
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
+    <form onSubmit={handleSubmit}>
       <input 
-        {...register('username', {required: true})}
+        value={values.username}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        name="username"
         type="text" 
         className={inputStyle('username')} 
         placeholder="username"/>
 
       <input 
-        {...register('email', {required: true, pattern: emailRgx})}
+        value={values.email}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        name="email"
         type="text" 
         className={inputStyle('email')} 
         placeholder="email"/>
 
-      <input type="submit" disabled={!isValid} className="form-control" value="Send"/>
+      <input type="submit" className="form-control" value="Send"/>
+
     </form>
   )
-
-
 
 }
 
