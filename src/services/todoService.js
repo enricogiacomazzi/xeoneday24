@@ -8,7 +8,7 @@ const wait = (time) => new Promise(res => {
 
 
 export async function GetTodos() {
-    await wait(3000);
+    // await wait(3000);
     const res = await axios.get(BASEURL);
     return res.data;
 }

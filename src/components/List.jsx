@@ -1,35 +1,26 @@
-import { useEffect, useState } from "react"
+
 import { EditTodo, GetTodos } from "../services/todoService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
 export default function List() {
-    const [todos, setTodos] = useState([]);
-    const [waiting, setWaiting] = useState(false);
+    const qc = useQueryClient();
+    const {data: todos, isPending, isError } = useQuery({queryKey: ['todos'], queryFn: GetTodos});
+    const {mutate} = useMutation({
+        mutationFn: (t) => EditTodo({...t, done: !t.done}),
+        onSuccess: () => {
+            qc.invalidateQueries({queryKey: ['todos']});
+        }
+    });
 
-    const fetchData = async () => {
-        setWaiting(true);
-        const data = await GetTodos();
-        setTodos(data);
-        setWaiting(false);
-    }
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const toggleTodo = async (todo) => {
-        await EditTodo({...todo, done: !todo.done});
-        await fetchData();
-    }
-
-    if(waiting) {
+    if(isPending) {
         return <h3>waiting...</h3>
     }
 
     return (
         <ul>
-            {todos.map(t => <ListItem key={t.id} todo={t} toggle={() => toggleTodo(t)}/>)}
+            {todos.map(t => <ListItem key={t.id} todo={t} toggle={() => mutate(t)}/>)}
         </ul>
     )
 }

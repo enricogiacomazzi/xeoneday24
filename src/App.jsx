@@ -3,10 +3,9 @@ import TodoCount from './components/TodoCount';
 
 
 export default function App() {
-
   return (
     <>
-      {/* <TodoCount/> */}
+      <TodoCount/>
       <List/>
     </>
   )

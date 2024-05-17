@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import { GetTodos } from "../services/todoService";
+import { useQuery } from "@tanstack/react-query";
 
 export default function TodoCount() {
-    const [count, setCount] = useState(0);
-    useEffect(() => {
-        GetTodos().then(todos => {
-            setCount(todos.filter(t => t.done).length);
-        });
-    }, []);
+    const {data: todos, isPending} = useQuery({queryKey: ['todos']});
 
-    return <h1>{count}</h1>
+
+    const count = () => {
+        if(isPending) {
+            return 0;
+        }
+
+        return todos.filter(t => t.done).length;
+    }
+
+    return <h1>{count()}</h1>
 }

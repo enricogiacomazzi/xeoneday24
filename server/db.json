@@ -3,17 +3,17 @@
     {
       "id": "1",
       "text": "fare la spesa",
-      "done": true
+      "done": false
     },
     {
       "id": "2",
       "text": "studiare react",
-      "done": true
+      "done": false
     },
     {
       "id": "3",
       "text": "fare aperitivo",
-      "done": true
+      "done": false
     }
   ]
 }
