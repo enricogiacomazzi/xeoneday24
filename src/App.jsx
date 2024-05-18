@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Comp1 } from './components/Comp1';
 
 
 export default function App() {
@@ -18,9 +19,11 @@ export default function App() {
     setCount(0);
   }
 
+  console.log('\n\napp render');
+
   return (
     <>
-      <h1>{count}</h1>
+      <Comp1 count={count}/>
       <button onClick={inc}>+</button>
       <button onClick={dec}>-</button>
       <button onClick={reset}>reset</button>
