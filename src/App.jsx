@@ -1,22 +1,26 @@
-import { useState } from 'react'
+
+import {signal, effect} from '@preact/signals-react';
+import {useSignals} from '@preact/signals-react/runtime';
 import { Comp1 } from './components/Comp1';
+
+const count = signal(0);
 
 
 export default function App() {
-  const [count, setCount] = useState(0);
+
 
   function inc() {
-    setCount(count + 1);
+    count.value++;
   }
 
 
   function dec() {
-    setCount(count - 1);
+    count.value--;
   }
 
 
   function reset() {
-    setCount(0);
+    count.value = 0;
   }
 
   console.log('\n\napp render');
